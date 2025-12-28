@@ -1,22 +1,24 @@
-
 {
   "name": "Quran Seekho Online",
   "short_name": "QuranSeekho",
-  "description": "Learn and Recite Holy Quran with Urdu/English translations.",
+  "description": "Complete Holy Quran with Urdu & English translations, Duas and Prayer Times.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#065f46",
+  "orientation": "portrait",
   "icons": [
     {
-      "src": "https://picsum.photos/192/192?random=1",
+      "src": "https://picsum.photos/192/192?random=islamic_icon",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "https://picsum.photos/512/512?random=1",
+      "src": "https://picsum.photos/512/512?random=islamic_icon_large",
       "sizes": "512x512",
       "type": "image/png"
     }
-  ]
+  ],
+  "categories": ["education", "reference", "books"]
 }

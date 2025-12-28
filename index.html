@@ -1,11 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quran Seekho Online - Learn and Recite Quran</title>
-    <meta name="description" content="Complete Quran with Urdu and English translations, Daily Duas, and Prayer Times.">
+    <title>Quran Seekho Online - Complete Holy Quran, Duas & Prayer Times</title>
+    <meta name="description" content="Read Holy Quran with Urdu and English translations. Includes Sipara (Juz) index, Daily Duas, and accurate Prayer Times. Production ready for quranseekho.online.">
     
     <!-- PWA Support -->
     <link rel="manifest" href="/manifest.json">
@@ -45,32 +44,83 @@
     <style>
         .arabic-text { font-family: 'Amiri', serif; direction: rtl; }
         .urdu-text { font-family: 'Noto Sans Arabic', sans-serif; direction: rtl; }
+        .page-transition { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #059669; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #064e3b; }
+        .active-link { color: #6ee7b7 !important; border-bottom: 2px solid #6ee7b7; }
     </style>
 <script type="importmap">
 {
   "imports": {
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "react/": "https://esm.sh/react@^19.2.3/",
     "react": "https://esm.sh/react@^19.2.3",
-    "react-router-dom": "https://esm.sh/react-router-dom@^7.11.0"
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.11.0",
+    "react/": "https://esm.sh/react@^19.2.3/"
   }
 }
 </script>
 </head>
-<body class="bg-slate-50 text-slate-900 font-sans antialiased">
-    <div id="root"></div>
+<body class="bg-slate-50 text-slate-900 font-sans antialiased min-h-screen flex flex-col">
     
-    <!-- Service Worker Registration -->
+    <nav class="bg-islamic-800 text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="/" class="nav-link text-xl font-bold flex items-center space-x-2">
+                <span class="bg-white text-islamic-800 p-1.5 rounded-xl shadow-inner">📖</span>
+                <span>Quran Seekho <span class="text-emerald-300">Online</span></span>
+            </a>
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="/" class="nav-link hover:text-emerald-200 transition font-medium py-1">Home</a>
+                <a href="/sipara" class="nav-link hover:text-emerald-200 transition font-medium py-1">Sipara</a>
+                <a href="/duas" class="nav-link hover:text-emerald-200 transition font-medium py-1">Duas</a>
+                <a href="/names" class="nav-link hover:text-emerald-200 transition font-medium py-1">99 Names</a>
+            </div>
+            <button id="mobile-menu-btn" class="md:hidden text-2xl p-2 focus:outline-none" aria-label="Toggle Menu">☰</button>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-islamic-900 px-4 pb-4 space-y-2 border-t border-islamic-700">
+            <a href="/" class="nav-link block py-3 border-b border-islamic-800">Home</a>
+            <a href="/sipara" class="nav-link block py-3 border-b border-islamic-800">Sipara (Juz)</a>
+            <a href="/duas" class="nav-link block py-3 border-b border-islamic-800">Daily Duas</a>
+            <a href="/names" class="nav-link block py-3 border-b border-islamic-800">99 Names of Allah</a>
+        </div>
+    </nav>
+
+    <main id="app" class="flex-grow container mx-auto px-4 py-8 max-w-7xl page-transition">
+        <!-- Initial Loader -->
+        <div class="flex flex-col items-center justify-center py-24">
+            <div class="w-14 h-14 border-4 border-islamic-600 border-t-transparent rounded-full animate-spin"></div>
+            <p class="mt-4 text-slate-400 font-medium">Bismillah...</p>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-slate-100 py-12 mt-auto">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="/" class="text-slate-400 hover:text-islamic-600 transition font-bold text-sm">Surah Index</a>
+                <a href="/sipara" class="text-slate-400 hover:text-islamic-600 transition font-bold text-sm">Juz Index</a>
+                <a href="/duas" class="text-slate-400 hover:text-islamic-600 transition font-bold text-sm">Duas</a>
+            </div>
+            <p class="text-slate-400 text-xs font-medium uppercase tracking-[0.2em]">© 2024 Quran Seekho Online • Built with ❤️ for the Ummah</p>
+        </div>
+    </footer>
+
+    <!-- Main JS Application -->
+    <script src="/app.js" type="module"></script>
+    
     <script>
-        if ('serviceWorker' in navigator) {
+        // Mobile Menu Logic
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+        
+        // Service Worker Registration (Production Only to avoid dev errors)
+        if ('serviceWorker' in navigator && 
+            window.location.hostname !== 'localhost' && 
+            !window.location.hostname.includes('usercontent.goog')) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/service-worker.js')
-                    .then(reg => console.log('SW registered'))
-                    .catch(err => console.log('SW error', err));
+                    .catch(err => console.log('SW registration failed: ', err));
             });
         }
     </script>
