@@ -1,0 +1,7 @@
+{
+  "name": "Quran Seekho Online",
+  "description": "A comprehensive Islamic portal featuring a full Quran reader with translations, daily duas, accurate prayer times, and offline PWA support.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
